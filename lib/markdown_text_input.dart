@@ -216,7 +216,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                     context: context,
                                     builder: (context) {
                                       return Dialog(
-                                        insetPadding: EdgeInsets.all(10),
+                                        insetPadding: EdgeInsets.all(20),
                                         child: Padding(
                                           padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
                                           child: Column(
