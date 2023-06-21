@@ -102,6 +102,8 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
@@ -213,56 +215,70 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                 await showDialog<void>(
                                     context: context,
                                     builder: (context) {
-                                      return AlertDialog(
-                                        title: Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [GestureDetector(child: Icon(Icons.close), onTap: () => Navigator.pop(context))],
-                                        ),
-                                        content: Column(
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            TextField(
-                                              controller: textController,
-                                              decoration: InputDecoration(
-                                                hintText: 'example',
-                                                label: Text(textLabel),
-                                                labelStyle: TextStyle(color: color),
-                                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                      return Dialog(
+                                        insetPadding: EdgeInsets.all(10),
+                                        child: Padding(
+                                          padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(bottom: 24.0),
+                                                child: Row(
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Text('Insert Link', style: theme.textTheme.titleLarge),
+                                                    GestureDetector(child: Icon(Icons.close), onTap: () => Navigator.pop(context)),
+                                                  ],
+                                                ),
                                               ),
-                                              autofocus: text.isEmpty,
-                                              focusNode: textFocus,
-                                              textInputAction: TextInputAction.next,
-                                              onSubmitted: (value) {
-                                                textFocus.unfocus();
-                                                FocusScope.of(context).requestFocus(linkFocus);
-                                              },
-                                            ),
-                                            SizedBox(height: 10),
-                                            TextField(
-                                              controller: linkController,
-                                              decoration: InputDecoration(
-                                                hintText: 'https://example.com',
-                                                label: Text(linkLabel),
-                                                labelStyle: TextStyle(color: color),
-                                                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                              TextField(
+                                                controller: textController,
+                                                decoration: InputDecoration(
+                                                  isDense: true,
+                                                  hintText: 'example',
+                                                  label: Text(textLabel),
+                                                  labelStyle: TextStyle(color: color),
+                                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                ),
+                                                autofocus: text.isEmpty,
+                                                focusNode: textFocus,
+                                                textInputAction: TextInputAction.next,
+                                                onSubmitted: (value) {
+                                                  textFocus.unfocus();
+                                                  FocusScope.of(context).requestFocus(linkFocus);
+                                                },
                                               ),
-                                              autofocus: text.isNotEmpty,
-                                              focusNode: linkFocus,
-                                            ),
-                                          ],
-                                        ),
-                                        contentPadding: EdgeInsets.fromLTRB(24.0, 20.0, 24.0, 0),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              onTap(type, link: linkController.text, selectedText: textController.text);
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('OK'),
+                                              SizedBox(height: 10),
+                                              TextField(
+                                                controller: linkController,
+                                                decoration: InputDecoration(
+                                                  isDense: true,
+                                                  hintText: 'https://example.com',
+                                                  label: Text(linkLabel),
+                                                  labelStyle: TextStyle(color: color),
+                                                  focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                  enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                                ),
+                                                autofocus: text.isNotEmpty,
+                                                focusNode: linkFocus,
+                                              ),
+                                              SizedBox(height: 10),
+                                              Align(
+                                                alignment: Alignment.centerRight,
+                                                child: TextButton(
+                                                  onPressed: () {
+                                                    onTap(type, link: linkController.text, selectedText: textController.text);
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: const Text('Insert'),
+                                                ),
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       );
                                     });
                               },
