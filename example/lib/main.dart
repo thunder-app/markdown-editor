@@ -27,55 +27,48 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Theme(
-        data: ThemeData(
-          primaryColor: const Color(0xFF2C1C6B),
-          colorScheme: ColorScheme.light().copyWith(secondary: const Color(0xFF200681)),
-          cardColor: const Color(0xFFF8F9FC),
-          textTheme: const TextTheme(bodyText1: TextStyle(fontSize: 20, color: Color(0xFF2C1C6B))),
+      theme: ThemeData.dark(useMaterial3: true),
+      home: Scaffold(
+        appBar: AppBar(
+          title: const Text('EditableTextInput'),
         ),
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('EditableTextInput'),
-          ),
-          body: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15),
-              child: ListView(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 100),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: <Widget>[
-                        MarkdownTextInput(
-                          (String value) => setState(() => description = value),
-                          description,
-                          label: 'Description',
-                          maxLines: 10,
-                          actions: MarkdownType.values,
-                          controller: controller,
-                          textStyle: TextStyle(fontSize: 16),
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15),
+            child: ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 100),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      MarkdownTextInput(
+                        (String value) => setState(() => description = value),
+                        description,
+                        label: 'Description',
+                        maxLines: 10,
+                        actions: MarkdownType.values,
+                        controller: controller,
+                        textStyle: TextStyle(fontSize: 16),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          controller.clear();
+                        },
+                        child: Text('Clear'),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 10),
+                        child: MarkdownBody(
+                          data: description,
+                          shrinkWrap: true,
                         ),
-                        TextButton(
-                          onPressed: () {
-                            controller.clear();
-                          },
-                          child: Text('Clear'),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: MarkdownBody(
-                            data: description,
-                            shrinkWrap: true,
-                          ),
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
             ),
           ),
         ),
