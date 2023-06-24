@@ -107,7 +107,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
-        border: Border.all(color: Theme.of(context).colorScheme.secondary, width: 2),
+        border: Border.all(color: Theme.of(context).colorScheme.primary, width: 2),
         borderRadius: const BorderRadius.all(Radius.circular(10)),
       ),
       child: Column(
@@ -137,7 +137,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
               borderRadius: const BorderRadius.only(bottomLeft: Radius.circular(10), bottomRight: Radius.circular(10)),
               child: ListView(
                 scrollDirection: Axis.horizontal,
-                children: widget.actions.map((type) {
+                children: widget.actions.map((MarkdownType type) {
                   switch (type) {
                     case MarkdownType.title:
                       return ExpandableNotifier(
@@ -175,6 +175,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                                     padding: EdgeInsets.all(10),
                                     child: Icon(
                                       Icons.close,
+                                      semanticLabel: 'Close header options',
                                     ),
                                   ),
                                 ),
@@ -186,6 +187,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                     case MarkdownType.link:
                       return _basicInkwell(
                         type,
+                        label: 'Link',
                         customOnTap: !widget.insertLinksByDialog
                             ? null
                             : () async {
@@ -284,7 +286,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
                               },
                       );
                     default:
-                      return _basicInkwell(type);
+                      return _basicInkwell(type, label: type.name);
                   }
                 }).toList(),
               ),
@@ -295,13 +297,13 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
     );
   }
 
-  Widget _basicInkwell(MarkdownType type, {Function? customOnTap}) {
+  Widget _basicInkwell(MarkdownType type, {required String label, Function? customOnTap}) {
     return InkWell(
       key: Key(type.key),
       onTap: () => customOnTap != null ? customOnTap() : onTap(type),
       child: Padding(
         padding: EdgeInsets.all(10),
-        child: Icon(type.icon),
+        child: Icon(type.icon, semanticLabel: label),
       ),
     );
   }
