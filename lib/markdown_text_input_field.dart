@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/markdown_buttons.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
@@ -77,6 +78,7 @@ class _MarkdownTextInputFieldState extends State<MarkdownTextInputField> {
     return Column(
       children: <Widget>[
         TextFormField(
+          spellCheckConfiguration: kIsWeb ? null : const SpellCheckConfiguration(),
           minLines: widget.minLines,
           focusNode: widget.focusNode,
           textInputAction: TextInputAction.newline,

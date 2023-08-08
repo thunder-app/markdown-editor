@@ -114,6 +114,7 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
         children: <Widget>[
           TextFormField(
             focusNode: focusNode,
+            spellCheckConfiguration: kIsWeb ? null : const SpellCheckConfiguration(),
             textInputAction: TextInputAction.newline,
             maxLines: widget.maxLines,
             controller: _controller,
