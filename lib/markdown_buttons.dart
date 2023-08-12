@@ -29,6 +29,9 @@ class MarkdownButtons extends StatelessWidget {
   /// Optional function to override the default image button action when [MarkdownType.image] is in [actions].
   final Function? customImageButtonAction;
 
+  /// When true, image icon is replaced by a [CircularProgressIndicator].
+  final bool imageIsLoading;
+
   /// Constructor for [MarkdownButtons]
   const MarkdownButtons({
     required this.controller,
@@ -36,6 +39,7 @@ class MarkdownButtons extends StatelessWidget {
     this.actions = const [MarkdownType.bold, MarkdownType.italic, MarkdownType.title, MarkdownType.link, MarkdownType.list],
     this.insertLinksByDialog = true,
     this.customImageButtonAction,
+    this.imageIsLoading = false,
   });
 
   @override
@@ -51,6 +55,20 @@ class MarkdownButtons extends StatelessWidget {
           children: actions.map((MarkdownType type) {
             switch (type) {
               case MarkdownType.image:
+                if (imageIsLoading) {
+                  return const Padding(
+                    padding: EdgeInsets.all(10.0),
+                    child: SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: Center(
+                            child: SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(),
+                        ))),
+                  );
+                }
                 return _basicInkwell(type, label: 'Image', customOnTap: customImageButtonAction);
               case MarkdownType.title:
                 return ExpandableNotifier(
