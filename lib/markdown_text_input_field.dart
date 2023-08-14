@@ -10,7 +10,7 @@ class MarkdownTextInputField extends StatefulWidget {
   final Function? onTextChanged;
 
   /// Initial value you want to display
-  final String initialValue;
+  final String? initialValue;
 
   /// Validator for the TextFormField
   final String? Function(String? value)? validators;
@@ -45,7 +45,7 @@ class MarkdownTextInputField extends StatefulWidget {
     required this.controller,
     required this.focusNode,
     this.onTextChanged,
-    this.initialValue = '',
+    this.initialValue,
     this.label = '',
     this.validators,
     this.textDirection = TextDirection.ltr,
@@ -61,7 +61,9 @@ class MarkdownTextInputField extends StatefulWidget {
 class _MarkdownTextInputFieldState extends State<MarkdownTextInputField> {
   @override
   void initState() {
-    widget.controller.text = widget.initialValue;
+    if (widget.initialValue != null) {
+      widget.controller.text = widget.initialValue!;
+    }
     if (widget.controller.selection.baseOffset == -1) {
       widget.controller.selection = const TextSelection.collapsed(offset: 0);
     }
