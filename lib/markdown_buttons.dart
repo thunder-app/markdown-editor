@@ -31,6 +31,9 @@ class MarkdownButtons extends StatelessWidget {
   /// When true, image icon is replaced by a [CircularProgressIndicator].
   final bool imageIsLoading;
 
+  /// Allows overriding tap actions
+  final Map<MarkdownType, void Function()>? customTapActions;
+
   /// Constructor for [MarkdownButtons]
   const MarkdownButtons({
     required this.controller,
@@ -39,6 +42,7 @@ class MarkdownButtons extends StatelessWidget {
     this.insertLinksByDialog = true,
     this.customImageButtonAction,
     this.imageIsLoading = false,
+    this.customTapActions,
   });
 
   @override
@@ -218,8 +222,13 @@ class MarkdownButtons extends StatelessWidget {
 
   Widget _basicInkwell(MarkdownType type, {required String label, Function? customOnTap}) {
     return InkWell(
+      customBorder: const CircleBorder(),
       key: Key(type.key),
-      onTap: () => customOnTap != null ? customOnTap() : _onTap(type),
+      onTap: () => customTapActions?.containsKey(type) == true
+          ? customTapActions![type]!()
+          : customOnTap != null
+              ? customOnTap()
+              : _onTap(type),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Icon(type.icon, semanticLabel: label),
