@@ -12,9 +12,10 @@ dependencies:
     sdk: flutter
   effective_dart: ^1.3.2
   expandable: ^5.0.1
-  translator: ^0.1.7
-
-
+  translator:
+    git:
+      url: https://github.com/gwbischof/translator.git
+      ref: 8ece7f8f07d74100dc327f4ff319202131b0625c
 dev_dependencies:
   flutter_test:
     sdk: flutter
