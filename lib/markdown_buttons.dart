@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 import 'package:markdown_editable_textinput/markdown_text_input_field.dart';
-import 'package:translator/translator.dart';
 
 import 'format_markdown.dart';
 
