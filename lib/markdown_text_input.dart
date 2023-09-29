@@ -203,16 +203,6 @@ class _MarkdownTextInputState extends State<MarkdownTextInput> {
 
                                 var textLabel = 'Text';
                                 var linkLabel = 'Link';
-                                try {
-                                  var textTranslation = await GoogleTranslator().translate(textLabel, to: language);
-                                  textLabel = textTranslation.text;
-
-                                  var linkTranslation = await GoogleTranslator().translate(linkLabel, to: language);
-                                  linkLabel = linkTranslation.text;
-                                } catch (e) {
-                                  textLabel = 'Text';
-                                  linkLabel = 'Link';
-                                }
 
                                 await showDialog<void>(
                                     context: context,
