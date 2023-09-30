@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:markdown_editable_textinput/markdown_text_input.dart';
 import 'package:markdown_editable_textinput/markdown_text_input_field.dart';
-import 'package:translator/translator.dart';
 
 import 'format_markdown.dart';
 
@@ -134,16 +133,6 @@ class MarkdownButtons extends StatelessWidget {
 
                           var textLabel = 'Text';
                           var linkLabel = 'Link';
-                          try {
-                            var textTranslation = await GoogleTranslator().translate(textLabel, to: language);
-                            textLabel = textTranslation.text;
-
-                            var linkTranslation = await GoogleTranslator().translate(linkLabel, to: language);
-                            linkLabel = linkTranslation.text;
-                          } catch (e) {
-                            textLabel = 'Text';
-                            linkLabel = 'Link';
-                          }
 
                           if (context.mounted) {
                             await showDialog<void>(
