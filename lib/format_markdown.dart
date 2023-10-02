@@ -7,8 +7,7 @@ class FormatMarkdown {
   /// Use [fromIndex] and [toIndex] for converting part of [data]
   /// [titleSize] is used for markdown titles
   /// [link] is used for link conversion type
-  static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex,
-      {int titleSize = 1, String? link, String selectedText = ''}) {
+  static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex, {int titleSize = 1, String? link, String selectedText = ''}) {
     late String changedData;
     late int replaceCursorIndex;
 
@@ -73,8 +72,7 @@ class FormatMarkdown {
 
     final cursorIndex = changedData.length;
 
-    return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length),
-        cursorIndex, replaceCursorIndex);
+    return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex, replaceCursorIndex);
   }
 }
 
@@ -130,6 +128,12 @@ enum MarkdownType {
 
   /// For ![Alt text](link)
   image,
+
+  /// For [@username@instance.tld](https://instance.tld/u/username)
+  username,
+
+  /// For [!community@instance.tld](https://instance.tld/c/community)
+  community,
 }
 
 /// Add data to [MarkdownType] enum
@@ -157,6 +161,10 @@ extension MarkownTypeExtension on MarkdownType {
         return 'separator_button';
       case MarkdownType.image:
         return 'image_button';
+      case MarkdownType.username:
+        return 'username_button';
+      case MarkdownType.community:
+        return 'community_button';
     }
   }
 
@@ -183,6 +191,10 @@ extension MarkownTypeExtension on MarkdownType {
         return Icons.minimize_rounded;
       case MarkdownType.image:
         return Icons.image_rounded;
+      case MarkdownType.username:
+        return Icons.alternate_email_rounded;
+      case MarkdownType.community:
+        return IconData(0x0021);
     }
   }
 }
