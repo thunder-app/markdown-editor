@@ -10,6 +10,7 @@ class FormatMarkdown {
   static ResultMarkdown convertToMarkdown(MarkdownType type, String data, int fromIndex, int toIndex, {int titleSize = 1, String? link, String selectedText = ''}) {
     late String changedData;
     late int replaceCursorIndex;
+    int? cursorIndex;
 
     final lesserIndex = min(fromIndex, toIndex);
     final greaterIndex = max(fromIndex, toIndex);
@@ -68,9 +69,14 @@ class FormatMarkdown {
         changedData = '![${data.substring(fromIndex, toIndex)}](${data.substring(fromIndex, toIndex)})';
         replaceCursorIndex = 3;
         break;
+      case MarkdownType.spoiler:
+        changedData = '::: spoiler Spoiler\n$selectedText\n:::';
+        replaceCursorIndex = 0;
+        cursorIndex = 20 + selectedText.length;
+        break;
     }
 
-    final cursorIndex = changedData.length;
+    cursorIndex ??= changedData.length;
 
     return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex, replaceCursorIndex);
   }
@@ -134,6 +140,12 @@ enum MarkdownType {
 
   /// For [!community@instance.tld](https://instance.tld/c/community)
   community,
+
+  /// For
+  /// ::: spoiler
+  /// :::
+  /// text
+  spoiler,
 }
 
 /// Add data to [MarkdownType] enum
@@ -165,6 +177,8 @@ extension MarkownTypeExtension on MarkdownType {
         return 'username_button';
       case MarkdownType.community:
         return 'community_button';
+      case MarkdownType.spoiler:
+        return 'spoiler_button';
     }
   }
 
@@ -195,6 +209,8 @@ extension MarkownTypeExtension on MarkdownType {
         return Icons.alternate_email_rounded;
       case MarkdownType.community:
         return IconData(0x0021);
+      case MarkdownType.spoiler:
+        return Icons.lock_rounded;
     }
   }
 }
