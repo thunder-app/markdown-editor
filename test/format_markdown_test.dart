@@ -471,8 +471,8 @@ void main() {
 
   test('successfully converts to image link (RTL)', () {
     String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
-    int from = 12;
-    int to = 17;
+    int from = 17;
+    int to = 12;
 
     ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
       MarkdownType.image,
@@ -485,5 +485,37 @@ void main() {
     expect(formattedText.cursorIndex, 15, reason: "dolor length = 5, '![](dolor)'= 10");
   });
 
-  // TODO: Add tests for username, community, spoiler
+  test('successfully converts to spoiler (LTR)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 12;
+    int to = 17;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem ipsum \n::: spoiler Spoiler\ndolor\n:::\n sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 20, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
+  });
+
+  test('successfully converts to spoiler (RTL)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 17;
+    int to = 12;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem ipsum \n::: spoiler Spoiler\ndolor\n:::\n sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 20, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
+  });
+
+  // TODO: Add tests for username, community
 }

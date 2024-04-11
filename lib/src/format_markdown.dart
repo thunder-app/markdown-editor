@@ -87,9 +87,9 @@ class FormatMarkdown {
         replaceCursorIndex = 3;
         break;
       case MarkdownType.spoiler:
-        changedData = '::: spoiler Spoiler\n$selectedText\n:::';
+        changedData = fromIndex == 0 ? '::: spoiler Spoiler\n${data.substring(fromIndex, toIndex)}\n:::' : '\n::: spoiler Spoiler\n${data.substring(fromIndex, toIndex)}\n:::\n';
         replaceCursorIndex = 0;
-        cursorIndex = 20 + selectedText.length;
+        cursorIndex = fromIndex == 0 ? 20 : 21 + data.substring(fromIndex, toIndex).length;
         break;
       case MarkdownType.username:
       case MarkdownType.community:
