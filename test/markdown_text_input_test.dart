@@ -38,6 +38,7 @@ void main() {
             MarkdownTextInputField(
               controller: controller,
               focusNode: focusNode,
+              spellCheckConfiguration: const SpellCheckConfiguration.disabled(),
             ),
             MarkdownToolbar(
               controller: controller,

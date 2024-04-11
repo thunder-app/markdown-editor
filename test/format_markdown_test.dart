@@ -498,7 +498,7 @@ void main() {
     );
 
     expect(formattedText.data, 'Lorem ipsum \n::: spoiler Spoiler\ndolor\n:::\n sit amet consectetur adipiscing elit.');
-    expect(formattedText.cursorIndex, 20, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
+    expect(formattedText.cursorIndex, 26, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
   });
 
   test('successfully converts to spoiler (RTL)', () {
@@ -514,7 +514,7 @@ void main() {
     );
 
     expect(formattedText.data, 'Lorem ipsum \n::: spoiler Spoiler\ndolor\n:::\n sit amet consectetur adipiscing elit.');
-    expect(formattedText.cursorIndex, 20, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
+    expect(formattedText.cursorIndex, 26, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
   });
 
   // TODO: Add tests for username, community
