@@ -35,6 +35,9 @@ class MarkdownTextInputField extends StatefulWidget {
   /// Overrides input text style
   final TextStyle? textStyle;
 
+  /// Configuration for spell checking
+  final SpellCheckConfiguration? spellCheckConfiguration;
+
   const MarkdownTextInputField({
     super.key,
     required this.controller,
@@ -47,6 +50,7 @@ class MarkdownTextInputField extends StatefulWidget {
     this.minLines,
     this.maxLines,
     this.textStyle,
+    this.spellCheckConfiguration,
   });
 
   @override
@@ -80,7 +84,7 @@ class _MarkdownTextInputFieldState extends State<MarkdownTextInputField> {
     return Column(
       children: <Widget>[
         TextFormField(
-          spellCheckConfiguration: kIsWeb ? null : const SpellCheckConfiguration(),
+          spellCheckConfiguration: widget.spellCheckConfiguration ?? (kIsWeb ? null : const SpellCheckConfiguration()),
           minLines: widget.minLines,
           focusNode: widget.focusNode,
           textInputAction: TextInputAction.newline,

@@ -87,9 +87,17 @@ class FormatMarkdown {
         replaceCursorIndex = 3;
         break;
       case MarkdownType.spoiler:
-        changedData = '::: spoiler Spoiler\n$selectedText\n:::';
+        if (fromIndex == 0 && toIndex == data.length) {
+          // If the entire data is selected, then convert to spoiler
+          changedData = '::: spoiler Spoiler\n${data.substring(fromIndex, toIndex)}\n:::';
+          cursorIndex = 20;
+        } else {
+          // If part of the data is selected, then add new lines when necessary
+          changedData = '${fromIndex == 0 ? '' : '\n'}::: spoiler Spoiler\n${data.substring(fromIndex, toIndex)}\n:::${toIndex == data.length ? '' : '\n'}';
+          cursorIndex = fromIndex == 0 ? 20 + data.substring(fromIndex, toIndex).length : 21 + data.substring(fromIndex, toIndex).length;
+        }
+
         replaceCursorIndex = 0;
-        cursorIndex = 20 + selectedText.length;
         break;
       case MarkdownType.username:
       case MarkdownType.community:

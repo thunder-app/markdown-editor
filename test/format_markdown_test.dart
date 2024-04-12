@@ -471,8 +471,8 @@ void main() {
 
   test('successfully converts to image link (RTL)', () {
     String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
-    int from = 12;
-    int to = 17;
+    int from = 17;
+    int to = 12;
 
     ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
       MarkdownType.image,
@@ -485,5 +485,133 @@ void main() {
     expect(formattedText.cursorIndex, 15, reason: "dolor length = 5, '![](dolor)'= 10");
   });
 
-  // TODO: Add tests for username, community, spoiler
+  test('successfully converts to spoiler (LTR)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 12;
+    int to = 17;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem ipsum \n::: spoiler Spoiler\ndolor\n:::\n sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 26, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
+  });
+
+  test('successfully converts to spoiler (RTL)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 17;
+    int to = 12;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem ipsum \n::: spoiler Spoiler\ndolor\n:::\n sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 26, reason: "dolor length = 5, '\n::: spoiler Spoiler\ndolor\n:::\n'= 31");
+  });
+
+  test('successfully converts to spoiler (partial with start index at 0) (LTR)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 0;
+    int to = 5;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, '::: spoiler Spoiler\nLorem\n:::\n ipsum dolor sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 25, reason: "::: spoiler Spoiler\nLorem = 25");
+  });
+
+  test('successfully converts to spoiler (partial with start index at 0) (RTL)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 5;
+    int to = 0;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, '::: spoiler Spoiler\nLorem\n:::\n ipsum dolor sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 25, reason: "::: spoiler Spoiler\nLorem = 25");
+  });
+
+  test('successfully converts to spoiler (partial with start index in the middle) (LTR)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 6;
+    int to = 11;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem \n::: spoiler Spoiler\nipsum\n:::\n dolor sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 26, reason: "\n::: spoiler Spoiler\nipsum = 26");
+  });
+
+  test('successfully converts to spoiler (partial with start index in the middle) (RTL)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 11;
+    int to = 6;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem \n::: spoiler Spoiler\nipsum\n:::\n dolor sit amet consectetur adipiscing elit.');
+    expect(formattedText.cursorIndex, 26, reason: "\n::: spoiler Spoiler\nipsum = 26");
+  });
+
+  test('successfully converts to spoiler (partial with end index at the end) (LTR)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 6;
+    int to = 55;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem \n::: spoiler Spoiler\nipsum dolor sit amet consectetur adipiscing elit.\n:::');
+    expect(formattedText.cursorIndex, 70, reason: "\n::: spoiler Spoiler\nipsum dolor sit amet consectetur adipiscing elit. = 70");
+  });
+
+  test('successfully converts to spoiler (partial with end index at the end) (RTL)', () {
+    String testString = 'Lorem ipsum dolor sit amet consectetur adipiscing elit.';
+    int from = 55;
+    int to = 6;
+
+    ResultMarkdown formattedText = FormatMarkdown.convertToMarkdown(
+      MarkdownType.spoiler,
+      testString,
+      from,
+      to,
+    );
+
+    expect(formattedText.data, 'Lorem \n::: spoiler Spoiler\nipsum dolor sit amet consectetur adipiscing elit.\n:::');
+    expect(formattedText.cursorIndex, 70, reason: "\n::: spoiler Spoiler\nipsum dolor sit amet consectetur adipiscing elit. = 70");
+  });
+
+  // TODO: Add tests for username, community
 }

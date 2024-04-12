@@ -100,6 +100,7 @@ class _AppState extends State<App> {
               MarkdownType.link,
               MarkdownType.bold,
               MarkdownType.italic,
+              MarkdownType.spoiler,
               MarkdownType.blockquote,
               MarkdownType.strikethrough,
               MarkdownType.title,
