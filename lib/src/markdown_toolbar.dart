@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
@@ -122,9 +123,6 @@ class MarkdownToolbar extends StatelessWidget {
                           FocusNode textFocus = FocusNode();
                           FocusNode linkFocus = FocusNode();
 
-                          Color color = theme.colorScheme.secondary;
-                          String language = kIsWeb ? window.locale.languageCode : Platform.localeName.substring(0, 2);
-
                           String textLabel = 'Text';
                           String linkLabel = 'Link';
 
@@ -132,33 +130,21 @@ class MarkdownToolbar extends StatelessWidget {
                             await showDialog<void>(
                               context: context,
                               builder: (context) {
-                                return Dialog(
-                                  insetPadding: const EdgeInsets.all(20),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 30.0),
+                                return AlertDialog(
+                                  title: const Text('Insert Link'),
+                                  content: SizedBox(
+                                    width: min(MediaQuery.of(context).size.width, 700),
                                     child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       mainAxisSize: MainAxisSize.min,
                                       children: [
-                                        Padding(
-                                          padding: const EdgeInsets.only(bottom: 24.0),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text('Insert Link', style: theme.textTheme.titleLarge),
-                                              GestureDetector(child: const Icon(Icons.close), onTap: () => Navigator.pop(context)),
-                                            ],
-                                          ),
-                                        ),
                                         TextField(
                                           controller: textController,
                                           decoration: InputDecoration(
                                             isDense: true,
                                             hintText: 'example',
                                             label: Text(textLabel),
-                                            labelStyle: TextStyle(color: color),
-                                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                            border: const OutlineInputBorder(),
                                           ),
                                           autofocus: text.isEmpty,
                                           focusNode: textFocus,
@@ -168,34 +154,34 @@ class MarkdownToolbar extends StatelessWidget {
                                             FocusScope.of(context).requestFocus(linkFocus);
                                           },
                                         ),
-                                        const SizedBox(height: 10),
+                                        const SizedBox(height: 12),
                                         TextField(
                                           controller: linkController,
                                           decoration: InputDecoration(
                                             isDense: true,
                                             hintText: 'https://example.com',
                                             label: Text(linkLabel),
-                                            labelStyle: TextStyle(color: color),
-                                            focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
-                                            enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: color, width: 2)),
+                                            border: const OutlineInputBorder(),
                                           ),
                                           autofocus: text.isNotEmpty,
                                           focusNode: linkFocus,
                                         ),
-                                        const SizedBox(height: 10),
-                                        Align(
-                                          alignment: Alignment.centerRight,
-                                          child: TextButton(
-                                            onPressed: () {
-                                              _onTap(type, link: linkController.text, selectedText: textController.text);
-                                              Navigator.pop(context);
-                                            },
-                                            child: const Text('Insert'),
-                                          ),
-                                        ),
                                       ],
                                     ),
                                   ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(context),
+                                      child: const Text('Cancel'),
+                                    ),
+                                    FilledButton(
+                                      onPressed: () {
+                                        _onTap(type, link: linkController.text, selectedText: textController.text);
+                                        Navigator.pop(context);
+                                      },
+                                      child: const Text('Insert'),
+                                    ),
+                                  ],
                                 );
                               },
                             );
