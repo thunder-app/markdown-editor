@@ -11,9 +11,6 @@ class FormatMarkdown {
     /// String to convert
     String data,
 
-    /// An alternate data source on which to perform formatting
-    String? alternateData,
-
     /// Start index when converting part of [data]
     int fromIndex,
 
@@ -27,6 +24,9 @@ class FormatMarkdown {
 
     /// The curently selected text
     String selectedText = '',
+
+    /// An alternate data source on which to perform formatting
+    String? alternateData,
   }) {
     late String changedData;
     late int replaceCursorIndex;
@@ -74,7 +74,7 @@ class FormatMarkdown {
         break;
       case MarkdownType.blockquote:
         var index = 0;
-        final splitedData = (alternateData ?? data.substring(fromIndex, toIndex)).split('\n');
+        final splitedData = (data.isEmpty ? (alternateData ?? '') : data.substring(fromIndex, toIndex)).split('\n');
         changedData = splitedData.map((value) {
           index++;
           return index == splitedData.length ? '> $value' : '> $value\n';

@@ -227,12 +227,12 @@ class MarkdownToolbar extends StatelessWidget {
     ResultMarkdown result = FormatMarkdown.convertToMarkdown(
       type,
       controller.text,
-      getAlternativeSelection?.call(),
       fromIndex,
       toIndex,
       titleSize: titleSize,
       link: link,
       selectedText: selectedText ?? controller.text.substring(fromIndex, toIndex),
+      alternateData: getAlternativeSelection?.call(),
     );
 
     controller.value = controller.value.copyWith(text: result.data, selection: TextSelection.collapsed(offset: fromIndex + result.cursorIndex));
