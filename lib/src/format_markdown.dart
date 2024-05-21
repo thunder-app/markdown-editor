@@ -11,6 +11,9 @@ class FormatMarkdown {
     /// String to convert
     String data,
 
+    /// An alternate data source on which to perform formatting
+    String? alternateData,
+
     /// Start index when converting part of [data]
     int fromIndex,
 
@@ -71,7 +74,7 @@ class FormatMarkdown {
         break;
       case MarkdownType.blockquote:
         var index = 0;
-        final splitedData = data.substring(fromIndex, toIndex).split('\n');
+        final splitedData = (alternateData ?? data.substring(fromIndex, toIndex)).split('\n');
         changedData = splitedData.map((value) {
           index++;
           return index == splitedData.length ? '> $value' : '> $value\n';
