@@ -236,7 +236,7 @@ enum MarkdownType {
       case MarkdownType.username:
         return Icons.alternate_email_rounded;
       case MarkdownType.community:
-        return const IconData(0x0021);
+        return Icons.priority_high_rounded;
       case MarkdownType.spoiler:
         return Icons.lock_rounded;
     }
