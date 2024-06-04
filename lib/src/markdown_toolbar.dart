@@ -33,6 +33,9 @@ class MarkdownToolbar extends StatelessWidget {
   /// Allows overriding tap actions for each [MarkdownType]
   final Map<MarkdownType, void Function()>? customTapActions;
 
+  /// A function which allows the widget's parent to provide an alternate text selection
+  final String? Function()? getAlternativeSelection;
+
   /// Constructor for [MarkdownToolbar]
   const MarkdownToolbar({
     super.key,
@@ -43,6 +46,7 @@ class MarkdownToolbar extends StatelessWidget {
     this.customImageButtonAction,
     this.imageIsLoading = false,
     this.customTapActions,
+    this.getAlternativeSelection,
   });
 
   @override
@@ -228,6 +232,7 @@ class MarkdownToolbar extends StatelessWidget {
       titleSize: titleSize,
       link: link,
       selectedText: selectedText ?? controller.text.substring(fromIndex, toIndex),
+      alternateData: getAlternativeSelection?.call(),
     );
 
     controller.value = controller.value.copyWith(text: result.data, selection: TextSelection.collapsed(offset: fromIndex + result.cursorIndex));
