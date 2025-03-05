@@ -74,7 +74,7 @@ class FormatMarkdown {
         break;
       case MarkdownType.blockquote:
         var index = 0;
-        final splitedData = (data.isEmpty ? (alternateData ?? '') : data.substring(fromIndex, toIndex)).split('\n');
+        final splitedData = (data.isEmpty || fromIndex == toIndex ? (alternateData ?? '') : data.substring(fromIndex, toIndex)).split('\n');
         changedData = splitedData.map((value) {
           index++;
           return index == splitedData.length ? '> $value' : '> $value\n';
