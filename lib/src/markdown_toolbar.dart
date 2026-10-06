@@ -1,11 +1,6 @@
-import 'dart:io';
 import 'dart:math';
-import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
-
-import 'package:expandable/expandable.dart';
+import 'package:material_ui/material_ui.dart';
 
 import 'format_markdown.dart';
 
@@ -75,43 +70,9 @@ class MarkdownToolbar extends StatelessWidget {
                 }
                 return _basicInkwell(type, label: 'Image', customOnTap: customImageButtonAction);
               case MarkdownType.title:
-                return ExpandableNotifier(
-                  child: Expandable(
-                    key: Key(MarkdownType.title.key),
-                    collapsed: ExpandableButton(
-                      child: const Center(
-                        child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: Text('H#', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
-                        ),
-                      ),
-                    ),
-                    expanded: Container(
-                      color: Colors.white10,
-                      child: Row(
-                        children: [
-                          for (int i = 1; i <= 6; i++)
-                            InkWell(
-                              key: Key('H${i}_button'),
-                              onTap: () => _onTap(MarkdownType.title, titleSize: i),
-                              child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Text(
-                                  'H$i',
-                                  style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
-                                ),
-                              ),
-                            ),
-                          ExpandableButton(
-                            child: const Padding(
-                              padding: EdgeInsets.all(10),
-                              child: Icon(Icons.close, semanticLabel: 'Close header options'),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+                return _HeadingSelector(
+                  key: Key(MarkdownType.title.key),
+                  onSelected: (size) => _onTap(MarkdownType.title, titleSize: size),
                 );
               case MarkdownType.link:
                 return _basicInkwell(
@@ -144,12 +105,7 @@ class MarkdownToolbar extends StatelessWidget {
                                       children: [
                                         TextField(
                                           controller: textController,
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            hintText: 'example',
-                                            label: Text(textLabel),
-                                            border: const OutlineInputBorder(),
-                                          ),
+                                          decoration: InputDecoration(isDense: true, hintText: 'example', label: Text(textLabel), border: const OutlineInputBorder()),
                                           autofocus: text.isEmpty,
                                           focusNode: textFocus,
                                           textInputAction: TextInputAction.next,
@@ -161,12 +117,7 @@ class MarkdownToolbar extends StatelessWidget {
                                         const SizedBox(height: 12),
                                         TextField(
                                           controller: linkController,
-                                          decoration: InputDecoration(
-                                            isDense: true,
-                                            hintText: 'https://example.com',
-                                            label: Text(linkLabel),
-                                            border: const OutlineInputBorder(),
-                                          ),
+                                          decoration: InputDecoration(isDense: true, hintText: 'https://example.com', label: Text(linkLabel), border: const OutlineInputBorder()),
                                           autofocus: text.isNotEmpty,
                                           focusNode: linkFocus,
                                         ),
@@ -174,10 +125,7 @@ class MarkdownToolbar extends StatelessWidget {
                                     ),
                                   ),
                                   actions: [
-                                    TextButton(
-                                      onPressed: () => Navigator.pop(context),
-                                      child: const Text('Cancel'),
-                                    ),
+                                    TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
                                     FilledButton(
                                       onPressed: () {
                                         _onTap(type, link: linkController.text, selectedText: textController.text);
@@ -208,8 +156,8 @@ class MarkdownToolbar extends StatelessWidget {
       onTap: () => customTapActions?.containsKey(type) == true
           ? customTapActions![type]!()
           : customOnTap != null
-              ? customOnTap()
-              : _onTap(type),
+          ? customOnTap()
+          : _onTap(type),
       child: Padding(
         padding: const EdgeInsets.all(10),
         child: Icon(type.icon, semanticLabel: label),
@@ -235,12 +183,80 @@ class MarkdownToolbar extends StatelessWidget {
       alternateData: getAlternativeSelection?.call(),
     );
 
-    controller.value = controller.value.copyWith(text: result.data, selection: TextSelection.collapsed(offset: fromIndex + result.cursorIndex));
+    controller.value = controller.value.copyWith(
+      text: result.data,
+      selection: TextSelection.collapsed(offset: fromIndex + result.cursorIndex),
+    );
 
     if (noTextSelected) {
       controller.selection = TextSelection.collapsed(offset: controller.selection.end - result.replaceCursorIndex);
     }
 
     focusNode.requestFocus();
+  }
+}
+
+class _HeadingSelector extends StatefulWidget {
+  const _HeadingSelector({super.key, required this.onSelected});
+
+  final ValueChanged<int> onSelected;
+
+  @override
+  State<_HeadingSelector> createState() => _HeadingSelectorState();
+}
+
+class _HeadingSelectorState extends State<_HeadingSelector> {
+  bool _expanded = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedCrossFade(
+      duration: const Duration(milliseconds: 300),
+      alignment: Alignment.topLeft,
+      sizeCurve: Curves.fastOutSlowIn,
+      crossFadeState: _expanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
+      layoutBuilder: (topChild, topChildKey, bottomChild, bottomChildKey) => Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Positioned(key: bottomChildKey, left: 0, top: 0, child: bottomChild),
+          KeyedSubtree(key: topChildKey, child: topChild),
+        ],
+      ),
+      firstChild: InkWell(
+        onTap: () => setState(() => _expanded = true),
+        child: const Center(
+          child: Padding(
+            padding: EdgeInsets.all(10),
+            child: Text('H#', style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700)),
+          ),
+        ),
+      ),
+      secondChild: Container(
+        color: Colors.white10,
+        child: Row(
+          children: [
+            for (int i = 1; i <= 6; i++)
+              InkWell(
+                key: Key('H${i}_button'),
+                onTap: () => widget.onSelected(i),
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(
+                    'H$i',
+                    style: TextStyle(fontSize: (18 - i).toDouble(), fontWeight: FontWeight.w700),
+                  ),
+                ),
+              ),
+            InkWell(
+              onTap: () => setState(() => _expanded = false),
+              child: const Padding(
+                padding: EdgeInsets.all(10),
+                child: Icon(Icons.close, semanticLabel: 'Close header options'),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

@@ -1,11 +1,29 @@
 # Markdown Editor
 
-A set of utility widgets that convert Text to Markdown. Extended to support custom Lemmy syntax.
+Markdown editing widgets for Flutter, with custom Lemmy and PieFed syntax.
 
 Provides `MarkdownToolbar` and `MarkdownTextInputField` widgets.
 
-## Markdown Support
+## Development
+
+Initialize the Flutter submodule after cloning:
+
+```sh
+git submodule update --init --recursive
+```
+
+Run analysis, formatting checks, tests, and coverage:
+
+```sh
+./scripts/check.sh
+```
+
+The coverage report is saved to `coverage/lcov.info` and uploaded as a CI artifact.
+
+## Markdown support
+
 The following markdown syntax is supported by this package:
+
 - Bold: `MarkdownType.bold`
 - Italics: `MarkdownType.italic`
 - Strikethrough: `MarkdownType.strikethrough`
@@ -18,11 +36,13 @@ The following markdown syntax is supported by this package:
 - Images: `MarkdownType.image`
 
 ### Custom Markdown
-Custom markdown actions have been added to handle Lemmy specific syntax. This includes
+
+Custom actions support Lemmy and PieFed syntax:
+
 - User format `@user@instance.tld`
 - Community format `!community@instance.tld`
 - Spoiler tags
 
 ## Acknowledgements
 
-Original implementation by [Playmoweb](https://github.com/playmoweb/markdown-editable-textinput). 
+Original implementation by [Playmoweb](https://github.com/playmoweb/markdown-editable-textinput).

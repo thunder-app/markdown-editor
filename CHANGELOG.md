@@ -1,3 +1,7 @@
-## [0.1.0] - 2024/04/10
+## 0.2.0
 
-* Removed [MarkdownTextInput] and separated [MarkdownTextInput] into [MarkdownTextInputField] and [MarkdownButtons] widgets.
+- Update Flutter support and migrate to `material_ui`.
+
+## 0.1.0
+
+- Split editor into text field and toolbar widgets.

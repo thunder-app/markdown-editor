@@ -11,29 +11,21 @@ on:
 
 jobs:
   linting:
-    name: Linting & Formatting
+    name: Checks & Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-
-      - uses: subosito/flutter-action@v2
+      - uses: actions/checkout@v4
         with:
-          flutter-version: '3.19.x'
-          channel: "stable"
-          cache: true
-          cache-key: 'flutter-:os:-:channel:-:version:-:arch:-:hash:' # optional, change this to force refresh cache
-          cache-path: '${{ runner.tool_cache }}/flutter/:channel:-:version:-:arch:' # optional, change this to specify the cache path
-          architecture: x64 # optional, x64 or arm64
+          fetch-depth: 0
+          submodules: recursive
 
-      - name: Dependencies
-        run: flutter pub get
+      - name: Verify
+        run: ./scripts/check.sh
 
-      - name: Linting
-        # We'll ignore info and warnings when performing this step
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
-
-      - name: Formatting
-        run: dart format --set-exit-if-changed -l 200 .
-
-      - name: Tests
-        run: flutter test
+      - name: Save coverage report
+        if: ${{ always() && hashFiles('coverage/lcov.info') != '' }}
+        uses: actions/upload-artifact@v7
+        with:
+          name: coverage
+          path: coverage/lcov.info
+          if-no-files-found: error

@@ -1,19 +1,20 @@
 name: markdown_editor
 description: A set of utility widgets that convert Text to Markdown
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/thunder-app/markdown-editor
 repository: https://github.com/thunder-app/markdown-editor
 
 environment:
-  sdk: "^3.0.0"
+  sdk: "^3.13.0"
+  flutter: ">=3.47.0"
 
 dependencies:
   flutter:
     sdk: flutter
-  expandable: ^5.0.1
+  material_ui: ^1.5.0
 
 dev_dependencies:
-  flutter_lints: ^3.0.2
+  flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
 

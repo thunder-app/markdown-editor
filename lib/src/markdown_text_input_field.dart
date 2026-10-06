@@ -1,7 +1,8 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
-/// A text field to enter raw Markdown text. Designed to be used in conjunction with [MarkdownButtons].
+import 'package:material_ui/material_ui.dart';
+
+/// A text field to enter raw Markdown text. Designed to be used with MarkdownToolbar.
 class MarkdownTextInputField extends StatefulWidget {
   /// Callback function called when text changed
   final Function? onTextChanged;
@@ -26,10 +27,10 @@ class MarkdownTextInputField extends StatefulWidget {
   /// If this is null, starts with enough vertical space for one line.
   final int? minLines;
 
-  /// Controller that controls this text field. The same controller must be given to the corresponding [MarkdownButtons].
+  /// Controller for this text field and the corresponding MarkdownToolbar.
   final TextEditingController controller;
 
-  /// [FocusNode] used to request focus on this text field. The same [FocusNode] must be given to the corresponding [MarkdownButtons].
+  /// [FocusNode] shared with the corresponding MarkdownToolbar.
   final FocusNode focusNode;
 
   /// Overrides input text style
@@ -54,7 +55,7 @@ class MarkdownTextInputField extends StatefulWidget {
   });
 
   @override
-  State createState() => _MarkdownTextInputFieldState();
+  State<MarkdownTextInputField> createState() => _MarkdownTextInputFieldState();
 }
 
 class _MarkdownTextInputFieldState extends State<MarkdownTextInputField> {
@@ -80,11 +81,12 @@ class _MarkdownTextInputFieldState extends State<MarkdownTextInputField> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final supportsSpellCheck = !kIsWeb && WidgetsBinding.instance.platformDispatcher.nativeSpellCheckServiceDefined;
 
     return Column(
       children: <Widget>[
         TextFormField(
-          spellCheckConfiguration: widget.spellCheckConfiguration ?? (kIsWeb ? null : const SpellCheckConfiguration()),
+          spellCheckConfiguration: widget.spellCheckConfiguration ?? (supportsSpellCheck ? const SpellCheckConfiguration() : null),
           minLines: widget.minLines,
           focusNode: widget.focusNode,
           textInputAction: TextInputAction.newline,
@@ -95,10 +97,7 @@ class _MarkdownTextInputFieldState extends State<MarkdownTextInputField> {
           style: widget.textStyle ?? theme.textTheme.bodyLarge,
           cursorColor: theme.textTheme.bodyLarge?.color,
           textDirection: widget.textDirection,
-          decoration: InputDecoration(
-            border: InputBorder.none,
-            hintText: widget.label,
-          ),
+          decoration: InputDecoration(border: InputBorder.none, hintText: widget.label),
         ),
       ],
     );

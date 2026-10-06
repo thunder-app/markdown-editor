@@ -1,6 +1,6 @@
 import 'dart:math';
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Class that converts a [String] to [ResultMarkdown]
 class FormatMarkdown {
@@ -16,6 +16,7 @@ class FormatMarkdown {
 
     /// End index when converting part of [data]
     int toIndex, {
+
     /// Title size for markdown headings
     int titleSize = 1,
 
@@ -104,16 +105,12 @@ class FormatMarkdown {
         break;
       case MarkdownType.username:
       case MarkdownType.community:
-        break;
+        throw UnsupportedError('${type.name} requires a custom tap action.');
     }
 
     cursorIndex ??= changedData.length;
 
-    return ResultMarkdown(
-      data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length),
-      cursorIndex,
-      replaceCursorIndex,
-    );
+    return ResultMarkdown(data.substring(0, fromIndex) + changedData + data.substring(toIndex, data.length), cursorIndex, replaceCursorIndex);
   }
 }
 
@@ -172,9 +169,11 @@ enum MarkdownType {
   image,
 
   /// For [@username@instance.tld](https://instance.tld/u/username)
+  /// Requires a custom tap action in MarkdownToolbar.
   username,
 
   /// For [!community@instance.tld](https://instance.tld/c/community)
+  /// Requires a custom tap action in MarkdownToolbar.
   community,
 
   /// For
